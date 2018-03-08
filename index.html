@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE-edge">
+		<meta name="Viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/styles.css">
+	</head>
+	<body>
+		
+    <div class="container">
+        <div class="mb-1 bg-primary d-inline-block"></div>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                
+                <div class="card">
+                    <img class="card-img-top" id="main" src="img/scenery/dungeon00-entrance.png" alt="Card image cap">
+                    <img class="card-img-overlay h-75 ml-5 mt-5" id="main-monster" src="" alt="">
+                    <div class="card-body">
+                      <h4 class="card-title" id="main-title"></h4><!-- Placeholder title --></h4>
+                      <p class="card-text">
+                        <!-- Placeholder text -->
+                      </p>
+                    </div>
+                </div>
+                
+                <form>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-lg" id="clickMe" type="submit" value="Forward" onclick="doMasterFunction();return false;">
+                        <input class="btn btn-outline-primary d-none" id="clickMe" type="submit" value="Attack" onclick="doMasterFunction();return false;">
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+
+        <div class="mb-1 bg-primary d-inline-block"></div>
+
+        <div class="row">
+            <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Info:</h4>
+
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                      <td>Turns:</td>
+                                      <td id="display-turns"></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Health:</td>
+                                      <td id="display-health"></td>
+                                    </tr>
+                            </table>
+                           
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
