@@ -5,22 +5,24 @@
 
 "use strict";
 
+let commonStats = {
+    diceFour        : 4,
+    diceSix         : 6,
+    diceEight       : 8,
+    diceTen         : 10,
+    diceTwelve      : 12,
+    diceTwenty      : 20,
+    playerTurn      : 0,
+    playerHealth    : 100,
+    monsterNumber   : 0,
+}
+
 function doMasterFunction() {
 
-    let commonStats = {
-        diceFour        : 4,
-        diceSix         : 6,
-        diceEight       : 8,
-        diceTen         : 10,
-        diceTwelve      : 12,
-        diceTwenty      : 20,
-        playerTurn      : 0,
-        playerHealth    : 100,
-        monsterNumber   : 0,
-    }
-
     let imagePath = "img/enemy/";
-    let action,;
+    let action;
+    let monsterNumber;
+    let gameState = 0;
 
     let monsterInfo = [
         {
@@ -66,27 +68,50 @@ function doMasterFunction() {
     ];
 
        
-    if(playerTurn >= 1) {
+    if(commonStats.playerTurn >= 1) {
         setImageSRC("main", "img/scenery/dungeon00.png");
     }
-    playerTurn += 1;
+    commonStats.playerTurn += 1;
 
-    action = rollDie(diceFour) 
-
-    if (action !== 1) {
-        clearScreen();
-    }
-
+    action = rollDie(commonStats.diceFour) 
+    
+    
     if (action === 1) {
-        monsterNumber = rollDie(diceEight);
+        gameState = 1;
+    
+        monsterNumber = rollDie(commonStats.diceEight);
         setDisplayMonster(monsterInfo, monsterNumber);
+
+        setInterfaceAttack();
+
     }
 
-    setInnerHTML("display-turns", playerTurn);
-    setInnerHTML("display-health", playerHealth);
+    if(gameState === 0) {
+        clearScreen();
+        setInterfaceNormal();
 
-    action = 0;
-    //console.log(turn);
+        action = 0;
+    }
+
+    setInnerHTML("display-turns", commonStats.playerTurn);
+    setInnerHTML("display-health", commonStats.playerHealth);
+
+}
+
+function setInterfaceNormal() {
+    delClass("button-forward", "d-none");
+    addClass("button-attack", "d-none");
+}
+
+function setInterfaceAttack() {
+    delClass("button-attack", "d-none");
+    addClass("button-forward", "d-none");
+}
+
+function preventDefaultClick(element) {
+    document.getElementById("button-attack").addEventListener("click", function(event){
+        event.preventDefault()
+    });
 }
 
 function setDisplayMonster(monsterArray, arrayIndex){
@@ -113,6 +138,14 @@ function determineRange(low, high) {
     }
 }
 
+function addClass(element, classToAdd) {
+    document.getElementById(element).classList.add(classToAdd);
+}
+
+function delClass(element, classToDel) {
+    document.getElementById(element).classList.remove(classToDel);
+}
+
 function setInnerHTML(id, value) {
     document.getElementById(id).innerHTML = value;
     return;
@@ -133,11 +166,11 @@ function setHiddenFalse(element) {
     setThisHidden.style.display = "block";
 } 
 
-let rollThis = diceFour;
+// let rollThis = diceFour;
 
-let rarity = determineRange(diceTwenty, diceTwenty);
-let durability = determineRange(diceTwenty, diceTwenty) + (10 * rarity);
-let damage = determineRange(diceTwenty, diceTwenty) * durability;
+// let rarity = determineRange(diceTwenty, diceTwenty);
+// let durability = determineRange(diceTwenty, diceTwenty) + (10 * rarity);
+// let damage = determineRange(diceTwenty, diceTwenty) * durability;
 
 // console.log("Rarity: " + rarity);
 // console.log("Durability: " + durability);
