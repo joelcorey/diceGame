@@ -20,9 +20,13 @@ let commonStats = {
 function doMasterFunction() {
 
     let imagePath = "img/enemy/";
-    let action;
+    let action = 0;
     let monsterNumber;
     let gameState = 0;
+    let monsterHealth;
+    let damageTotal = 0;
+    let damageDealt;
+    let currentMonsterHealth;
 
     let monsterInfo = [
         {
@@ -70,32 +74,48 @@ function doMasterFunction() {
        
     if(commonStats.playerTurn >= 1) {
         setImageSRC("main", "img/scenery/dungeon00.png");
+        //setInnerHTML("main-title", "Those who wander here are lost");
     }
     commonStats.playerTurn += 1;
 
-    action = rollDie(commonStats.diceFour) 
-    
-    
-    if (action === 1) {
-        gameState = 1;
-    
-        monsterNumber = rollDie(commonStats.diceEight);
-        setDisplayMonster(monsterInfo, monsterNumber);
+    if (gameState === 0) {
 
-        setInterfaceAttack();
-
-    }
-
-    if(gameState === 0) {
         clearScreen();
         setInterfaceNormal();
 
-        action = 0;
+        if(action === 0) {
+            //setInterfaceNormal();
+            action = rollDie(commonStats.diceFour);
+        }
+        if(action === 1) {
+            gameState = 1
+            console.log("Action: " + action);
+        }
+    } 
+    if (gameState === 1) {
+        setInterfaceAttack();
+        monsterNumber = rollDie(commonStats.diceEight);
+        setDisplayMonster(monsterInfo, monsterNumber);
+
+        document.getElementById("button-attack").addEventListener("click", function() {
+            currentMonsterHealth = attackHandler(monsterInfo[monsterNumber].health);
+            console.log(monsterInfo[monsterNumber].name + " health: " + currentMonsterHealth);
+            if (currentMonsterHealth <= 0) {
+                gameState = 0;
+            }
+        });     
     }
+
+    // console.log('monsterNumber', monsterNumber);
 
     setInnerHTML("display-turns", commonStats.playerTurn);
     setInnerHTML("display-health", commonStats.playerHealth);
 
+}
+
+function attackHandler(monsterHealth) {
+    //console.log(monsterHealth);
+    return monsterHealth - 20;
 }
 
 function setInterfaceNormal() {
@@ -106,12 +126,6 @@ function setInterfaceNormal() {
 function setInterfaceAttack() {
     delClass("button-attack", "d-none");
     addClass("button-forward", "d-none");
-}
-
-function preventDefaultClick(element) {
-    document.getElementById("button-attack").addEventListener("click", function(event){
-        event.preventDefault()
-    });
 }
 
 function setDisplayMonster(monsterArray, arrayIndex){
