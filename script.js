@@ -15,18 +15,15 @@ let commonStats = {
     playerTurn      : 0,
     playerHealth    : 100,
     monsterNumber   : 0,
+    monsterHealth   : 0,
+    action          : 0,
+    gameState       : 0
 }
 
 function doMasterFunction() {
 
     let imagePath = "img/enemy/";
     let monsterNumber;
-    let monsterHealth;
-    let damageTotal = 0;
-    let damageDealt;
-    let currentMonsterHealth;
-    let action = 0;
-    let gameState = 0;
 
     let monsterInfo = [
         {
@@ -70,7 +67,6 @@ function doMasterFunction() {
             "health"        : 20
         }
     ];
-
        
     if(commonStats.playerTurn >= 1) {
         setImageSRC("main", "img/scenery/dungeon00.png");
@@ -78,45 +74,46 @@ function doMasterFunction() {
     }
     commonStats.playerTurn += 1;
 
-    
-    if(gameState === 0) {
-        if(action === 0) {
+
+    if(commonStats.gameState === 0) {
+        if(commonStats.action === 0) {
             clearScreen();
             setInterfaceNormal();
-            //setInterfaceNormal();
-            action = rollDie(commonStats.diceFour);
-            console.log("Rolled, action = " + action);
+            commonStats.action = rollDie(commonStats.diceFour);
+            console.log("Rolled, action = " + commonStats.action);
         }
-        if(action === 1) {
-            gameState = 1;
+        if(commonStats.action === 1) {
+            monsterNumber = rollDie(commonStats.diceEight);
+            console.log(monsterInfo[monsterNumber].name + " health: " + commonStats.monsterHealth);
+            commonStats.monsterHealth = monsterInfo[monsterNumber].health;
 
-             
+            setInterfaceAttack();
+        
+            setDisplayMonster(monsterInfo, monsterNumber);
+
+            commonStats.gameState = 1;
         }
-        if(action === 2) {
-            action = 0;
+        if(commonStats.action === 2) {
+            commonStats.action = 0;
         }
-        if(action === 3) {
-            action = 0;
+        if(commonStats.action === 3) {
+            commonStats.action = 0;
         }
-        if(action === 4) {
-            action = 0;
+        if(commonStats.action === 4) {
+            commonStats.action = 0;
         }
     }
 
-    if(gameState === 1) {
+    if(commonStats.gameState === 1) {      
 
-        setInterfaceAttack();
-        monsterNumber = rollDie(commonStats.diceEight);
-        setDisplayMonster(monsterInfo, monsterNumber);
+        commonStats.monsterHealth -= 20;
+        
+        if (commonStats.monsterHealth <= 0) {
+            console.log("Enemy killed");
+            commonStats.gameState = 0;
+            commonStats.action = 0;
+        }
 
-        document.getElementById("button-attack").addEventListener("click", function() {
-            currentMonsterHealth = monsterInfo[monsterNumber].health - attackHandler(0);
-            console.log(monsterInfo[monsterNumber].name + " health: " + currentMonsterHealth);
-            if (currentMonsterHealth <= 0) {
-                //commonStats.gameState = 0;
-                //commonStats.action = 0;
-            }
-        });
     }
 
     // console.log('monsterNumber', monsterNumber);
@@ -124,11 +121,6 @@ function doMasterFunction() {
     setInnerHTML("display-turns", commonStats.playerTurn);
     setInnerHTML("display-health", commonStats.playerHealth);
 
-}
-
-function attackHandler(totalDamage) {
-    //console.log(monsterHealth);
-    return totalDamage + 20;
 }
 
 function setInterfaceNormal() {
@@ -202,6 +194,3 @@ function setHiddenFalse(element) {
 // console.log("Rarity: " + rarity);
 // console.log("Durability: " + durability);
 // console.log("Damage: " + damage);
-
-
-doMasterFunction();
