@@ -163,6 +163,10 @@ function doMasterFunction() {
             setInterfaceNormal();
         }
 
+        if (commonStats.playerHealth <= 0) {
+            delClass(overlay, d-none);
+        }
+
     }
 
     setInnerHTML("display-turns", commonStats.playerTurn);
