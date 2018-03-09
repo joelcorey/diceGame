@@ -15,8 +15,6 @@ let commonStats = {
     playerTurn      : 0,
     playerHealth    : 100,
     monsterNumber   : 0,
-    action          : 0,
-    gameState       : 0
 }
 
 function doMasterFunction() {
@@ -27,6 +25,8 @@ function doMasterFunction() {
     let damageTotal = 0;
     let damageDealt;
     let currentMonsterHealth;
+    let action = 0;
+    let gameState = 0;
 
     let monsterInfo = [
         {
@@ -79,15 +79,32 @@ function doMasterFunction() {
     commonStats.playerTurn += 1;
 
     
+    if(gameState === 0) {
+        if(action === 0) {
+            clearScreen();
+            setInterfaceNormal();
+            //setInterfaceNormal();
+            action = rollDie(commonStats.diceFour);
+            console.log("Rolled, action = " + action);
+        }
+        if(action === 1) {
+            gameState = 1;
 
-    if(commonStats.action === 0) {
-        clearScreen();
-        setInterfaceNormal();
-        //setInterfaceNormal();
-        commonStats.action = rollDie(commonStats.diceFour);
-        console.log("Rolled, action = " + commonStats.action);
+             
+        }
+        if(action === 2) {
+            action = 0;
+        }
+        if(action === 3) {
+            action = 0;
+        }
+        if(action === 4) {
+            action = 0;
+        }
     }
-    if(commonStats.action === 1) {
+
+    if(gameState === 1) {
+
         setInterfaceAttack();
         monsterNumber = rollDie(commonStats.diceEight);
         setDisplayMonster(monsterInfo, monsterNumber);
@@ -97,23 +114,10 @@ function doMasterFunction() {
             console.log(monsterInfo[monsterNumber].name + " health: " + currentMonsterHealth);
             if (currentMonsterHealth <= 0) {
                 //commonStats.gameState = 0;
-                commonStats.action = 0;
+                //commonStats.action = 0;
             }
-        }); 
+        });
     }
-    if(commonStats.action === 2) {
-        commonStats.action = 0;
-    }
-    if(commonStats.action === 3) {
-        commonStats.action = 0;
-    }
-    if(commonStats.action === 4) {
-        commonStats.action = 0;
-    }
-
-    // if(commonStats.gameState === 1) {
-            
-    // }
 
     // console.log('monsterNumber', monsterNumber);
 
