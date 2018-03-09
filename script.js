@@ -154,7 +154,7 @@ function doMasterFunction() {
         console.log("commonStats.monsterHealth: " + commonStats.monsterHealth);
         console.log("commonStats.playerHealth: " + commonStats.playerHealth);
 
-        setInnerHTML("main-title-monstersubtext", "Attacked player for " + monsterAttack + " damage");
+        setInnerHTML("main-title-monstersubtext", "Attacks player, deals " + monsterAttack + " damage");
 
         if (commonStats.monsterHealth <= 0) {
             console.log("Enemy killed");
@@ -170,7 +170,7 @@ function doMasterFunction() {
 }
 
 function getMonsterAttackValue(value1, value2) {
-    let attack = rollDie(value1) - rollDie(value2);
+    let attack = rollDie(value1) - rollDie(value2) * 5;
     if(attack <= 0) {
         getMonsterAttackValue(value1, value2);
     }
@@ -203,6 +203,7 @@ function setDisplayMonster(monsterArray, arrayIndex){
 function clearScreen() {
     setInnerHTML("main-title", "");
     setImageSRC("main-monster", "");
+    setImageSRC("main-title-monstersubtext", "");
 }
 
 function rollDie(sides) {
