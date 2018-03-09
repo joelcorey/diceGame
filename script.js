@@ -9,8 +9,8 @@ let commonStats = {
     diceFour        : 4, //
     diceSix         : 6, //
     diceEight       : 8, //
-    diceTen         : 10,
-    diceTwelve      : 12, 
+    diceTen         : 10, //
+    diceTwelve      : 12, //
     diceTwenty      : 20, //
     playerTurn      : 0,
     playerHealth    : 100,
@@ -26,6 +26,7 @@ function doMasterFunction() {
     let monsterNumber;
     let quoteNumber;
     let potionNumber;
+    let playerAttack;
 
     let dungeonSayings = [
         "This game is terrible.",
@@ -40,7 +41,7 @@ function doMasterFunction() {
         "Where is all the loot?",
         "Rumor has it this dungeon is made of more than one image.",
         "There will be no arrow to the knee joke in this game.",
-        "Where is the exit is this damned place?",
+        "Where is the exit in this damned place?",
         "Text goes here.",
         "Boot to the head!",
         "Whoopsie!",
@@ -107,7 +108,6 @@ function doMasterFunction() {
         if(commonStats.action === 0) {
             setInnerHTML("main-title-subtext", "Those who wander here are lost");
             clearScreen();
-            // setInterfaceNormal();
             commonStats.action = rollDie(commonStats.diceFour);
             console.log("Rolled, action = " + commonStats.action);
         }
@@ -119,7 +119,6 @@ function doMasterFunction() {
             console.log("Health set/reset: " + commonStats.monsterHealth);
 
             setInterfaceAttack();
-        
             setDisplayMonster(monsterInfo, monsterNumber);
 
             commonStats.gameState = 1;
@@ -143,8 +142,10 @@ function doMasterFunction() {
     }
 
     if(commonStats.gameState === 1) {      
+        playerAttack = getPlayerAttackValue(commonStats.diceTwelve, commonStats.diceSix);
+        console.log("playerAttack: " + playerAttack);
 
-        commonStats.monsterHealth -= 20;
+        commonStats.monsterHealth -= playerAttack;
         console.log("commonStats.monsterHealth: " + commonStats.monsterHealth);
         if (commonStats.monsterHealth <= 0) {
             console.log("Enemy killed");
@@ -155,11 +156,17 @@ function doMasterFunction() {
 
     }
 
-    // console.log('monsterNumber', monsterNumber);
-
     setInnerHTML("display-turns", commonStats.playerTurn);
     setInnerHTML("display-health", commonStats.playerHealth);
 
+}
+
+function getPlayerAttackValue(value1, value2) {
+    let attack = rollDie(value1) - rollDie(value2) * 10;
+    if(attack <= 0) {
+        getPlayerAttackValue(value1, value2);
+    }
+    return Math.abs(attack);
 }
 
 function setInterfaceNormal() {
@@ -184,7 +191,6 @@ function clearScreen() {
 
 function rollDie(sides) {
     return Math.floor(Math.random() * sides);
-    //return Math.floor(Math.random() * sides) + 1;
 }
 
 function determineRange(low, high) {
@@ -223,13 +229,3 @@ function setHiddenFalse(element) {
     let setThisHidden = document.getElementById(element);
     setThisHidden.style.display = "block";
 } 
-
-// let rollThis = diceFour;
-
-// let rarity = determineRange(diceTwenty, diceTwenty);
-// let durability = determineRange(diceTwenty, diceTwenty) + (10 * rarity);
-// let damage = determineRange(diceTwenty, diceTwenty) * durability;
-
-// console.log("Rarity: " + rarity);
-// console.log("Durability: " + durability);
-// console.log("Damage: " + damage);
