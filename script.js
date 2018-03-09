@@ -27,6 +27,7 @@ function doMasterFunction() {
     let quoteNumber;
     let potionNumber;
     let playerAttack;
+    let monsterAttack;
 
     let dungeonSayings = [
         "This game is terrible.",
@@ -143,10 +144,18 @@ function doMasterFunction() {
 
     if(commonStats.gameState === 1) {      
         playerAttack = getPlayerAttackValue(commonStats.diceTwelve, commonStats.diceSix);
+        monsterAttack = getMonsterAttackValue(commonStats.diceTwelve, commonStats.diceSix);
         console.log("playerAttack: " + playerAttack);
+        console.log("monsterAttack: " + monsterAttack);
 
         commonStats.monsterHealth -= playerAttack;
+        commonStats.playerHealth -= monsterAttack;
+
         console.log("commonStats.monsterHealth: " + commonStats.monsterHealth);
+        console.log("commonStats.playerHealth: " + commonStats.playerHealth);
+
+        setInnerHTML("main-title-monstersubtext", "Attacked player for " + monsterAttack + " damage");
+
         if (commonStats.monsterHealth <= 0) {
             console.log("Enemy killed");
             commonStats.gameState = 0;
@@ -158,7 +167,14 @@ function doMasterFunction() {
 
     setInnerHTML("display-turns", commonStats.playerTurn);
     setInnerHTML("display-health", commonStats.playerHealth);
+}
 
+function getMonsterAttackValue(value1, value2) {
+    let attack = rollDie(value1) - rollDie(value2);
+    if(attack <= 0) {
+        getMonsterAttackValue(value1, value2);
+    }
+    return Math.abs(attack);
 }
 
 function getPlayerAttackValue(value1, value2) {
