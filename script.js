@@ -15,14 +15,14 @@ let commonStats = {
     playerTurn      : 0,
     playerHealth    : 100,
     monsterNumber   : 0,
+    action          : 0,
+    gameState       : 0
 }
 
 function doMasterFunction() {
 
     let imagePath = "img/enemy/";
-    let action = 0;
     let monsterNumber;
-    let gameState = 0;
     let monsterHealth;
     let damageTotal = 0;
     let damageDealt;
@@ -78,33 +78,42 @@ function doMasterFunction() {
     }
     commonStats.playerTurn += 1;
 
-    if (gameState === 0) {
+    
 
+    if(commonStats.action === 0) {
         clearScreen();
         setInterfaceNormal();
-
-        if(action === 0) {
-            //setInterfaceNormal();
-            action = rollDie(commonStats.diceFour);
-        }
-        if(action === 1) {
-            gameState = 1
-            console.log("Action: " + action);
-        }
-    } 
-    if (gameState === 1) {
+        //setInterfaceNormal();
+        commonStats.action = rollDie(commonStats.diceFour);
+        console.log("Rolled, action = " + commonStats.action);
+    }
+    if(commonStats.action === 1) {
         setInterfaceAttack();
         monsterNumber = rollDie(commonStats.diceEight);
         setDisplayMonster(monsterInfo, monsterNumber);
 
         document.getElementById("button-attack").addEventListener("click", function() {
-            currentMonsterHealth = attackHandler(monsterInfo[monsterNumber].health);
+            currentMonsterHealth = monsterInfo[monsterNumber].health - attackHandler(0);
             console.log(monsterInfo[monsterNumber].name + " health: " + currentMonsterHealth);
             if (currentMonsterHealth <= 0) {
-                gameState = 0;
+                //commonStats.gameState = 0;
+                commonStats.action = 0;
             }
-        });     
+        }); 
     }
+    if(commonStats.action === 2) {
+        commonStats.action = 0;
+    }
+    if(commonStats.action === 3) {
+        commonStats.action = 0;
+    }
+    if(commonStats.action === 4) {
+        commonStats.action = 0;
+    }
+
+    // if(commonStats.gameState === 1) {
+            
+    // }
 
     // console.log('monsterNumber', monsterNumber);
 
@@ -113,9 +122,9 @@ function doMasterFunction() {
 
 }
 
-function attackHandler(monsterHealth) {
+function attackHandler(totalDamage) {
     //console.log(monsterHealth);
-    return monsterHealth - 20;
+    return totalDamage + 20;
 }
 
 function setInterfaceNormal() {
