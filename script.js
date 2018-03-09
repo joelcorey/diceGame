@@ -47,8 +47,8 @@ function doMasterFunction() {
         "What is your quest?",
         "Nobody expects the Spanish inquisition!",
         "Another one bites the dust.",
-        "Nods.",
-        "Derp.",
+        "Nods. Yes. Fine.",
+        "We are the knights who say NI!",
         "TODO: Make game fun.",
         "20th saying right here, super original!"
     ]
