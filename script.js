@@ -6,12 +6,12 @@
 "use strict";
 
 let commonStats = {
-    diceFour        : 4,
-    diceSix         : 6,
-    diceEight       : 8,
+    diceFour        : 4, //
+    diceSix         : 6, //
+    diceEight       : 8, //
     diceTen         : 10,
-    diceTwelve      : 12,
-    diceTwenty      : 20,
+    diceTwelve      : 12, 
+    diceTwenty      : 20, //
     playerTurn      : 0,
     playerHealth    : 100,
     monsterNumber   : 0,
@@ -24,6 +24,8 @@ function doMasterFunction() {
 
     let imagePath = "img/enemy/";
     let monsterNumber;
+    let quoteNumber;
+    let potionNumber;
 
     let dungeonSayings = [
         "This game is terrible.",
@@ -31,24 +33,24 @@ function doMasterFunction() {
         "Here's looking at you, kid",
         "Here monster, monster, monster",
         "Nothing flies over my head, I would surely catch it",
-        "",
+        "Click if you care.",
         "Show me the money!",
-        "",
+        "It smells like the undead in here",
         "Coffee is for closers.",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
+        "Where is all the loot?",
+        "Rumor has it this dungeon is made of more than one image.",
+        "There will be no arrow to the knee joke in this game.",
+        "Where is the exit is this damned place?",
+        "Text goes here.",
+        "Boot to the head!",
+        "Whoopsie!",
+        "What is your quest?",
+        "Nobody expects the Spanish inquisition!",
+        "Another one bites the dust.",
+        "Nods.",
+        "Derp.",
+        "TODO: Make game fun.",
+        "20th saying right here, super original!"
     ]
 
     let monsterInfo = [
@@ -100,7 +102,6 @@ function doMasterFunction() {
     }
     commonStats.playerTurn += 1;
 
-
     if(commonStats.gameState === 0) {
         
         if(commonStats.action === 0) {
@@ -112,6 +113,7 @@ function doMasterFunction() {
         }
         if(commonStats.action === 1) {
             monsterNumber = rollDie(commonStats.diceEight);
+            
             console.log(monsterInfo[monsterNumber].name + " health: " + commonStats.monsterHealth);
             commonStats.monsterHealth = monsterInfo[monsterNumber].health;
             console.log("Health set/reset: " + commonStats.monsterHealth);
@@ -123,9 +125,16 @@ function doMasterFunction() {
             commonStats.gameState = 1;
         }
         if(commonStats.action === 2) {
+            quoteNumber = rollDie(commonStats.diceTwenty);
+            setInnerHTML("main-title-subtext", dungeonSayings[quoteNumber]);
+
             commonStats.action = 0;
         }
         if(commonStats.action === 3) {
+            potionNumber = rollDie(commonStats.diceSix);
+            commonStats.playerHealth += potionNumber;
+            setInnerHTML("main-title-subtext", "Found health potion, gain " + potionNumber + " health");
+
             commonStats.action = 0;
         }
         if(commonStats.action === 4) {
