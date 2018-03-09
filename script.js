@@ -164,7 +164,7 @@ function doMasterFunction() {
         }
 
         if (commonStats.playerHealth <= 0) {
-            delClass(overlay, d-none);
+            delClass("overlay", "d-none");
         }
 
     }
