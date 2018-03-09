@@ -25,6 +25,32 @@ function doMasterFunction() {
     let imagePath = "img/enemy/";
     let monsterNumber;
 
+    let dungeonSayings = [
+        "This game is terrible.",
+        "Lights, camera, action!",
+        "Here's looking at you, kid",
+        "Here monster, monster, monster",
+        "Nothing flies over my head, I would surely catch it",
+        "",
+        "Show me the money!",
+        "",
+        "Coffee is for closers.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ]
+
     let monsterInfo = [
         {
             "name"          : "Rat",
@@ -70,15 +96,17 @@ function doMasterFunction() {
        
     if(commonStats.playerTurn >= 1) {
         setImageSRC("main", "img/scenery/dungeon00.png");
-        //setInnerHTML("main-title", "Those who wander here are lost");
+        
     }
     commonStats.playerTurn += 1;
 
 
     if(commonStats.gameState === 0) {
+        
         if(commonStats.action === 0) {
+            setInnerHTML("main-title-subtext", "Those who wander here are lost");
             clearScreen();
-            setInterfaceNormal();
+            // setInterfaceNormal();
             commonStats.action = rollDie(commonStats.diceFour);
             console.log("Rolled, action = " + commonStats.action);
         }
@@ -86,6 +114,7 @@ function doMasterFunction() {
             monsterNumber = rollDie(commonStats.diceEight);
             console.log(monsterInfo[monsterNumber].name + " health: " + commonStats.monsterHealth);
             commonStats.monsterHealth = monsterInfo[monsterNumber].health;
+            console.log("Health set/reset: " + commonStats.monsterHealth);
 
             setInterfaceAttack();
         
@@ -107,11 +136,12 @@ function doMasterFunction() {
     if(commonStats.gameState === 1) {      
 
         commonStats.monsterHealth -= 20;
-        
+        console.log("commonStats.monsterHealth: " + commonStats.monsterHealth);
         if (commonStats.monsterHealth <= 0) {
             console.log("Enemy killed");
             commonStats.gameState = 0;
             commonStats.action = 0;
+            setInterfaceNormal();
         }
 
     }
